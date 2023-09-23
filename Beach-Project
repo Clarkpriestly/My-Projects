@@ -1,0 +1,53 @@
+---
+title: "Beach Project"
+author: "Ireneaus Nyame"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Loading Beach Data 
+```{r}
+Beach <- read.csv("beach_data.csv")
+summary(Beach)
+```
+
+## Answering some questions about our data
+## 1. What is the mean and standard deviation of the weights?
+```{r}
+sd(Beach$Weight)
+mean(Beach$Weight)
+```
+
+## 2. Plot the weights 
+```{r}
+barplot(Beach$Weight, names = Beach$Sample, col = "steelblue")
+```
+
+## 3. Is there a difference in weight between the animals?
+```{r}
+aov(Beach$Weight~Beach$Animal)
+summary(aov(Beach$Weight~Beach$Animal))
+```
+
+## 4. What about the relationship between weight and tidal zone of animals?
+```{r}
+summary(aov(Beach$Weight~Beach$Zone))
+```
+
+We find out that the mean weight of all animals in the data set is 22.6kg. Also we realized there is a relationship between weight and animals or tidal zones is significant and not due to chance. 
+
+## Evaluating the anova model assumptions
+```{r}
+anova1 <- lm(Beach$Weight~Beach$Animal, data = Beach)
+plot(density(anova1$residuals))
+```
+
+```{r}
+anova2 <- lm(Beach$Weight~Beach$Zone, data = Beach)
+plot(density(anova2$residuals))
+```
+
